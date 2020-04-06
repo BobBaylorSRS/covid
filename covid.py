@@ -109,7 +109,7 @@ def display_one_country(opts, df, country):
         print(df3)
     show_country_stats(df3, country)
     if opts['--plot']:
-        plot_one_country(opts, df3)
+        plot_one_country(df3)
 
 
 def plot_multi_countries(opts, df, countries):
@@ -148,7 +148,7 @@ def plot_multi_countries(opts, df, countries):
     plt.show()
 
 
-def plot_one_country(opts, df):
+def plot_one_country(df):
     """A simple plot of 1 country
        select just the columns I want to plot
     """
@@ -163,7 +163,6 @@ def plot_one_country(opts, df):
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))  # major x:Mondays
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d')) # x labels month/day
 
-    # plt.ylim(bottom=int(opts['--threshold'])//2)
     plt.grid(which='major', axis='both')             # show both major axis
     plt.grid(which='minor', axis='y', ls='dotted')   # show y minor as dotted
     fig.autofmt_xdate()       # rotate, right align, and leave room for date labels
@@ -209,7 +208,15 @@ def test(opts):
     df['new deaths'] = df['deaths']
 
     # only keep what I care about
-    df = df[['geoId', 'countriesAndTerritories', "Date", "new cases", "new deaths", "total cases", "total deaths", "popData2018"]]
+    df = df[['geoId',
+             'countriesAndTerritories',
+             "Date",
+             "new cases",
+             "new deaths",
+             "total cases",
+             "total deaths",
+             "popData2018",
+             ]]
 
     #if opts['--average']:    # rolling and exponentials both leave the most recent data too low
     #    df['new cases'] = df['new cases'].rolling(window=2).mean()
