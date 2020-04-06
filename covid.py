@@ -32,14 +32,14 @@ USAGE_TEXT = """
  Options:
   -c --country <C>        choose geoIds, comma sep, no spaces [default: US,IT,FR,UK]
   -d --debug <D>          print opts,
-  -g --get                Get current WHO data
+  -g --get                Get current WHO data.
   -h --help               Show this screen.
   -i --ids                Show a list of the country geoIds.
-  -l --lines              Show the data in tabular form
-  -m --multi <M>          Multiplot all on one plot. c=cases, d=deaths
-  -p --plot               Plot the data
-  -t --threshold <T>      min case count [default: 10]
-  -v --version            show the version
+  -l --lines              Show the data in tabular form.
+  -m --multi <M>          Multi all on one plot. c=cases, d=deaths. lower case for new, upper for totals.
+  -p --plot               Plot the data.
+  -t --threshold <T>      min case count [default: 10].
+  -v --version            show the version.
     """
 DATA_FILE = 'req.csv'
 
@@ -86,8 +86,9 @@ def show_all_country_codes(df):
 def show_country_stats(df, country_id):
     """the grim stats of the selected df """
     df3 = df[df['geoId'] == country_id]
-    print(f'sum of cases:  {sum(df3["cases"]):8,}')
-    print(f'sum of deaths: {sum(df3["deaths"]):8,}')
+    pop = df3.iloc[0]["popData2018"]
+    print(f'sum of cases:  {sum(df3["cases"]):8,}  ({(100.0*sum(df3["cases"])/pop):.2f}% of 2018 population)')
+    print(f'sum of deaths: {sum(df3["deaths"]):8,}  ({(100.0*sum(df3["deaths"])/pop):.2f}% of 2018 population)')
 
 
 def show_country_name(df, country_id):
@@ -119,9 +120,11 @@ def plot_multi_countries(opts, df, countries):
         show_country_stats(df, country)
 
     df3 = df[df['geoId'].isin(countries.split(','))]
-    df4 = df3[["Date", "geoId", "new cases", "new deaths"]]
-
-    y_col = 'new cases' if 'c' in opts['--multi'] else 'new deaths'
+    df4 = df3[["Date", "geoId", "new cases", "new deaths", "total cases", "total deaths"]]
+    y_col = {'c':'new cases',
+             'd':'new deaths',
+             'C':'total cases',
+             'D':'total deaths'}[opts['--multi']]
     title = f'{y_col} in {", ".join(countries.split(","))}'
 
     fig, ax = plt.subplots(figsize=(8, 5))          # 8 wide by 4 tall seems good
@@ -150,7 +153,8 @@ def plot_one_country(opts, df):
        select just the columns I want to plot
     """
     country_name = df.iloc[0]["countriesAndTerritories"]
-    df4 = df[["Date", "new cases", "new deaths"]]
+
+    df4 = df[["Date", "new cases", "new deaths", "total cases", "total deaths"]]
 
     fig, ax = plt.subplots(figsize=(8, 5))          # 8 wide by 4 tall seems good
     ax.set_yscale('log')                            # log y axis to see slope
@@ -197,8 +201,16 @@ def test(opts):
     # I do it before selecting by country to avoid the SettingWithCopy warning
     # which is pandas saying 'you're modifying a copy, not the actual dataset'
     df['Date'] = pd.to_datetime(df.dateRep, format='%d/%m/%Y')
+    df['total deaths'] = df.groupby(['countriesAndTerritories'])['deaths'].cumsum()
+    df['total cases'] = df.groupby(['countriesAndTerritories'])['cases'].cumsum()
     df['new cases'] = df['cases']
     df['new deaths'] = df['deaths']
+
+    df = df.iloc[::-1]        # reverse the df so that totals plot older to newer
+
+    #if opts['--average']:    # rolling and exponentials both leave the most recent data too low
+    #    df['new cases'] = df['new cases'].rolling(window=2).mean()
+    #    df['new deaths'] = df['new deaths'].rolling(window=2).mean()
 
     # filter out small numbers of cases in a day
     df2 = df[df['cases'] >= int(opts['--threshold'])]
@@ -213,5 +225,5 @@ def test(opts):
 
 
 if __name__ == '__main__':
-    opts = docopt.docopt(USAGE_TEXT, version='0.0.3')
+    opts = docopt.docopt(USAGE_TEXT, version='0.0.4')
     test(opts)

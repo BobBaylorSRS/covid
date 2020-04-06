@@ -1,6 +1,6 @@
 # covid.py
 ## What is this?
-A python script to display WHO daily data on covid19 using pandas. 
+A python script to display WHO daily data on covid19 using pandas.
 ## Why?
 Really, to learn a bit of pandas. But also to visualize the world-wide time series of this pandemic.
 ## How do I use this?
@@ -27,7 +27,7 @@ Options:
  -h --help               Show this screen.
  -i --ids                Show a list of the country geoIds.
  -l --lines              Show the data in tabular form
- -m --multi <M>          Multiplot all on one plot. c=cases, d=deaths
+ -m --multi <M>          Multi all on one plot. c=cases, d=deaths. lower case for new, upper for totals.
  -p --plot               Plot the data
  -t --threshold <T>      min case count [default: 10]
  -v --version            show the version
@@ -37,8 +37,8 @@ Options:
  ### ```--get or -g```
  You only need to do this to get new data from WHO, so, once per day, at most.
  ### ```--ids or -i```
- Displays a list of the country "geoIds" in the WHO dataset. These (mostly) 2 letter codes are how you specify which countries you want 
- the script to display. 
+ Displays a list of the country "geoIds" in the WHO dataset. These (mostly) 2 letter codes are how you specify which countries you want
+ the script to display.
  ### ```--country or -c <C>```
  Choose which countries ```<C>``` to display. The default shown in the help, above, is USA, Italy, France, and the UK. You list of country
  codes can only be separated by commas, no spaces.
@@ -46,15 +46,15 @@ Options:
  Display the data table as text. It uses the pandas defaults, so countries with more than a couple of dozen entries
  will display just the head and tail (first 10 lines and last 10 lines).
  ### ```--multi or -m <M>```
- Display the data for multiple countries on a single plot. ```<M>``` selects either cases (c) or deaths (d).  
+ Display the data for multiple countries on a single plot. ```<M>``` selects between new cases (c), new deaths (d), total cases (C), or total deaths (D).
  ### ```--plot``` or ```-p```
- Plot the selected countries each on a separate graph. The graphs appear one after the other. You have to close each graph before the next one 
+ Plot the selected countries each on a separate graph. The graphs appear one after the other. You have to close each graph before the next one
  appears. Yeah, I know. Kinda lame. You probably just want to use ```-m```. The only reason to use ```-p``` is to see cases and deaths on the same plot.
  ## Examples
-  * ```python covid.py -g``` 
-  
+  * ```python covid.py -g```
+
     retrieves the current dataset from the World Heath Organization (WHO). Do this, at most, once a day.
   * ```python covid.py -m c -c US,FR,ES```
-  
+
      Plots the daily new cases in the USA, France, and Spain on a single graph. Remember: the -c county option does not accept anything but commas separating the country codes.
       * todo: more examples?
