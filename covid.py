@@ -197,6 +197,8 @@ def test(opts):
     if opts['--ids']:
         show_all_country_codes(df)  # show geo_ids in country alpha order
 
+    df = df.iloc[::-1]        # reverse the df so that totals plot older to newer
+
     # make plotable date and rename the cases and deaths for plotting
     # I do it before selecting by country to avoid the SettingWithCopy warning
     # which is pandas saying 'you're modifying a copy, not the actual dataset'
@@ -206,7 +208,6 @@ def test(opts):
     df['new cases'] = df['cases']
     df['new deaths'] = df['deaths']
 
-    df = df.iloc[::-1]        # reverse the df so that totals plot older to newer
 
     #if opts['--average']:    # rolling and exponentials both leave the most recent data too low
     #    df['new cases'] = df['new cases'].rolling(window=2).mean()
