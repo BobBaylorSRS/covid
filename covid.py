@@ -46,7 +46,7 @@ DATA_FILE = 'req.csv'
 def get_data():
     """ curl https://opendata.ecdc.europa.eu/covid19/casedistribution/csv/ > req.csv
     """
-    print('getting file...', end='')
+    print('getting file...', end='', flush=True)
     response = requests.get(r'https://opendata.ecdc.europa.eu/covid19/casedistribution/csv/')
     with open(DATA_FILE, 'w') as csv_f:
         csv_f.write(response.text)
