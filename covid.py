@@ -183,7 +183,7 @@ def test(opts):
 
     df = pd.read_csv(DATA_FILE, encoding="ISO-8859-1")
     f_date = datetime.fromtimestamp(os.path.getmtime(DATA_FILE))
-    print(f'data was retrieved {f_date:%B %d, %Y at %H:%M %p}')
+    print(f'Data was retrieved {f_date:%B %d, %Y at %H:%M %p}')
 
     # clean the data a little. That cruise ship has the longest id strings in the whole df
     df.replace('Cases_on_an_international_conveyance_Japan',
@@ -206,7 +206,8 @@ def test(opts):
     df['total cases'] = df.groupby(['countriesAndTerritories'])['cases'].cumsum()
     df['new cases'] = df['cases']
     df['new deaths'] = df['deaths']
-
+    max_date = df['Date'].max()
+    print(f'Most recent date point is {max_date:%B %d, %Y at %H:%M %p}')
     # only keep what I care about
     df = df[['geoId',
              'countriesAndTerritories',
