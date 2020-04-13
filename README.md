@@ -5,7 +5,7 @@ A python script to display WHO daily data on covid19 using pandas.
 Really, to learn a bit of pandas. But also to visualize the world-wide time series of this pandemic.
 ## How do I use this?
 I've only tested this on python 3.7.3
-After cloning <br>and creating a new virtual environment, <br>then<br><br>... run
+<br><br>After cloning <br>and creating a new virtual environment, <br>then<br><br>... run
 ```
 pip install -r requirements.txt
 ```
