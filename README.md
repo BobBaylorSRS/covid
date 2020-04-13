@@ -5,7 +5,7 @@ A python script to display WHO daily data on covid19 using pandas.
 Really, to learn a bit of pandas. But also to visualize the world-wide time series of this pandemic.
 ## How do I use this?
 I've only tested this on python 3.7.3
-After cloning and creating a new virtual environment, run
+After cloning <br>and creating a new virtual environment, <br>then<br><br>... run
 ```
 pip install -r requirements.txt
 ```
@@ -40,8 +40,8 @@ Options:
  Displays a list of the country "geoIds" in the WHO dataset. These (mostly) 2 letter codes are how you specify which countries you want
  the script to display.
  ### ```--country or -c <C>```
- Choose which countries ```<C>``` to display. The default shown in the help, above, is USA, Italy, France, and the UK. You list of country
- codes can only be separated by commas, no spaces.
+ Choose which countries ```<C>``` to display. The default shown in the help, above, is USA, Italy, France, and the UK. Your list of country
+ codes can only be separated by commas, no spaces. So ```US,IT,FR,UK``` works but not ```US, IT, FR, UK```.
  ### ```--lines or -l```
  Display the data table as text. It uses the pandas defaults, so countries with more than a couple of dozen entries
  will display just the head and tail (first 10 lines and last 10 lines).
